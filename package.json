@@ -1,0 +1,13 @@
+{
+  "name": "trello-server",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "NguyenHoangVu My Trello",
+  "main": "src/server.js",
+  "author": "Nguyen Hoang Vu",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}

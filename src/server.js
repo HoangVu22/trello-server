@@ -1,5 +1,6 @@
 import express from 'express'
-import { connectDB, getDB } from '~/config/mongodb'
+import exitHook from 'async-exit-hook'
+import { connectDB, getDB, closeDB } from '~/config/mongodb'
 
 const START_SERVER = () => {
   const app = express()
@@ -15,6 +16,12 @@ const START_SERVER = () => {
   
   app.listen(port, hostname, () => {
     console.log(`🚀🚀 Server ready at http://${hostname}:${port}/`)
+  })
+
+  // Thực hiện các tác vụ cleanup trước khi dừng server lại
+  exitHook(() => {
+    console.log('Disconnected from MongoDB Atlas!')
+    closeDB()
   })
 }
 

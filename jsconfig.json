@@ -1,3 +1,4 @@
+// để khi mà muốn tìm code chỗ import thì nó sẽ chuyển đến file đó.
 {
   "compilerOptions": {
     "paths": {

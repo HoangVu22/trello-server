@@ -1,13 +1,11 @@
-const MONGODB_URI = 'mongodb+srv://hoangvu22062001:DuGhcaM9lGw3uEap@cluster0.rtlafhz.mongodb.net/?retryWrites=true&w=majority'
-const DATABASENAME = 'my-trello'
-
 import { MongoClient, ServerApiVersion } from 'mongodb'
+import { env } from '~/config/environment'
 
 // Tạo ra 1 đối tượng trelloDatabaseInstance ban đầu là null (vì chúng ta chưa connect)
 let trelloDatabaseInstance = null
 
 // Khởi tạo đối tượng mongoClientInstance để connect tới mongo (docs)
-const mongoClientInstance = new MongoClient(MONGODB_URI, {
+const mongoClientInstance = new MongoClient(env.MONGODB_URI, {
   serverApi: {
     version: ServerApiVersion.v1,
     strict: true,
@@ -21,7 +19,7 @@ export const connectDB = async () => {
   await mongoClientInstance.connect()
 
   // Kết nối thành công thì lấy DB theo tên và gán ngược nó lại vào biến trelloDatabaseInstance ở trên
-  trelloDatabaseInstance = mongoClientInstance.db(DATABASENAME)
+  trelloDatabaseInstance = mongoClientInstance.db(env.DATABASENAME)
 }
 
 // Đóng kết nối tới Database khi cần

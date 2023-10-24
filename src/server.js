@@ -1,21 +1,17 @@
 import express from 'express'
 import exitHook from 'async-exit-hook'
-import { connectDB, getDB, closeDB } from '~/config/mongodb'
+import { connectDB, closeDB } from '~/config/mongodb'
+import { env } from '~/config/environment'
 
 const START_SERVER = () => {
   const app = express()
   
-  const hostname = 'localhost'
-  const port = 8017
-  
-  app.get('/', async (req, res) => {
-    console.log(await getDB().listCollections().toArray())
-
+  app.get('/', (req, res) => {
     res.end('<h1>Hello World!</h1><hr>')
   })
   
-  app.listen(port, hostname, () => {
-    console.log(`🚀🚀 Server ready at http://${hostname}:${port}/`)
+  app.listen(env.APP_PORT, env.APP_HOST, () => {
+    console.log(`🚀🚀 Hi ${env.AUTHOR}, Server ready at http://${env.APP_HOST}:${env.APP_PORT}/`)
   })
 
   // Thực hiện các tác vụ cleanup trước khi dừng server lại

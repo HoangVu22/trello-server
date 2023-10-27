@@ -19,7 +19,7 @@ export const connectDB = async () => {
   await mongoClientInstance.connect()
 
   // Kết nối thành công thì lấy DB theo tên và gán ngược nó lại vào biến trelloDatabaseInstance ở trên
-  trelloDatabaseInstance = mongoClientInstance.db(env.DATABASENAME)
+  trelloDatabaseInstance = mongoClientInstance.db(env.DATABASE_NAME)
 }
 
 // Đóng kết nối tới Database khi cần

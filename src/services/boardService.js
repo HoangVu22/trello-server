@@ -13,11 +13,9 @@ const createNew = async (reqBody) => {
 
     // Gọi tới tầng Model để xử lý lưu bản ghi newBoard vào DB
     const createdBoard = await boardModel.createNew(newBoard)
-    console.log(createdBoard) // kết quả của thằng insertOne của MongoDB node driver
 
     // Lấy bản ghi board sau khi gọi (tùy mục đích dự án mà có cần bước này hay k)
     const getNewBoard = await boardModel.findOneById(createdBoard.insertedId)
-    console.log(getNewBoard)
 
     // Trả kq về, trong tầng Service luôn phải có return
     return getNewBoard

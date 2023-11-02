@@ -1,7 +1,7 @@
 import Joi from 'joi'
 import { StatusCodes } from 'http-status-codes'
 import ApiError from '~/utils/ApiError'
-
+import { BOARD_BAR_TYPES } from '~/utils/constants'
 
 const createNew = async (req, res, next) => {
   const correctCondition = Joi.object({
@@ -15,6 +15,7 @@ const createNew = async (req, res, next) => {
       'string.trim': 'Title must not have leading or trailing whitespace',
     }),
     description: Joi.string().required().min(3).max(250).trim().strict(),
+    type: Joi.string().valid(BOARD_BAR_TYPES.PUBLIC, BOARD_BAR_TYPES.PRIVATE).required()
   })
 
   try {

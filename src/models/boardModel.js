@@ -88,7 +88,21 @@ const getDetails = async (id) => {
         }
       }
     ]).toArray()
-    return result[0] || {}
+    return result[0] || null
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+// Push 1 giá trị columnId vào cuối mảng columnOrderIds trong collection boards
+const pushColumnOrderIds = async (column) => {
+  try {
+    const result = await getDB().collection(BOARD_COLLECTION_NAME).findOneAndUpdate(
+      { _id: new ObjectId(column.boardId) }, // Tìm 1 collection boards theo id
+      { $push: { columnOrderIds: new ObjectId(column._id) } }, // đẩy columnId vào mảng columnOrderIds của collection boards
+      { returnDocument: 'after' } // trả về document mới sau khi đã cập nhật
+    )
+    return result.value || null
   } catch (error) {
     throw new Error(error)
   }
@@ -99,5 +113,6 @@ export const boardModel = {
   BOARD_COLLECTION_SCHEMA,
   createNew,
   findOneById,
-  getDetails
+  getDetails,
+  pushColumnOrderIds
 }

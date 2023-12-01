@@ -24,6 +24,9 @@ const BOARD_COLLECTION_SCHEMA = Joi.object({
   _destroy: Joi.boolean().default(false) // bản ghi này đã bị xóa hay chưa
 })
 
+// Những trường không muốn cho phép update
+const INVALID_UPDATE_FIELDS = ['_id', 'createdAt']
+
 const validateBeforeCreate = async (data) => {
   /* Tại sao validate ở tầng Validation rồi mà ở bên tầng Model lại validate tiếp:
     - Vì: ngoài những cái client gửi lên ở Validation (title, description) là mình validate trước rồi mới đưa dl sang controller -> service -> model
@@ -102,7 +105,27 @@ const pushColumnOrderIds = async (column) => {
       { $push: { columnOrderIds: new ObjectId(column._id) } }, // đẩy columnId vào mảng columnOrderIds của collection boards
       { returnDocument: 'after' } // trả về document mới sau khi đã cập nhật
     )
-    return result.value || null
+    return result
+  } catch (error) {
+    throw new Error(error)
+  }
+}
+
+const update = async (boardId, updateData) => {
+  try {
+    // Lọc những field mà chúng ta k cho phép update
+    Object.keys(updateData).forEach(fieldName => {
+      if (INVALID_UPDATE_FIELDS.includes(fieldName)) {
+        delete updateData[fieldName]
+      }
+    })
+
+    const result = await getDB().collection(BOARD_COLLECTION_NAME).findOneAndUpdate(
+      { _id: new ObjectId(boardId) }, // Tìm 1 collection boards theo id
+      { $set: updateData },
+      { returnDocument: 'after' } // trả về document mới sau khi đã cập nhật
+    )
+    return result
   } catch (error) {
     throw new Error(error)
   }
@@ -114,5 +137,6 @@ export const boardModel = {
   createNew,
   findOneById,
   getDetails,
-  pushColumnOrderIds
+  pushColumnOrderIds,
+  update
 }

@@ -62,7 +62,7 @@ const pushCardOrderIds = async (card) => {
       { $push: { cardOrderIds: new ObjectId(card._id) } }, // đẩy cardId vào mảng cardOrderIds của collection columns
       { returnDocument: 'after' } // trả về document mới sau khi đã cập nhật
     )
-    return result.value
+    return result
   } catch (error) {
     throw new Error(error)
   }

@@ -120,6 +120,11 @@ const update = async (boardId, updateData) => {
       }
     })
 
+    // Đối với những dl liên quan đến ObjectId thì biến đổi ở đây
+    if (updateData.columnOrderIds) {
+      updateData.columnOrderIds = updateData.columnOrderIds.map(_id => (new ObjectId(_id)))
+    }
+
     const result = await getDB().collection(BOARD_COLLECTION_NAME).findOneAndUpdate(
       { _id: new ObjectId(boardId) }, // Tìm 1 collection boards theo id
       { $set: updateData },

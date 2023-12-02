@@ -80,6 +80,11 @@ const update = async (columnId, updateData) => {
       }
     })
 
+    // Đối với những dl liên quan đến ObjectId thì biến đổi ở đây
+    if (updateData.cardOrderIds) {
+      updateData.cardOrderIds = updateData.cardOrderIds.map(_id => (new ObjectId(_id)))
+    }
+
     const result = await getDB().collection(COLUMN_COLLECTION_NAME).findOneAndUpdate(
       { _id: new ObjectId(columnId) }, // Tìm 1 collection column theo id
       { $set: updateData },
